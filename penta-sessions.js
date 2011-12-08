@@ -76,6 +76,9 @@ var INFO =
             <p>
                 Loads session from <oa>file</oa>, replacing all tabs in current window if no ! was added.
             </p>
+            <p>
+                If <oa>file</oa> is a basename, it will look for it in <o>sessiondir</o>.
+            </p>
         </description>
     </item>
 </plugin>;
@@ -140,7 +143,7 @@ group.commands.add(['sessions[ave]','mkses[sion]'],
 group.commands.add(['sessionl[oad]'],
     'Load a session file',
     function(args) {
-        let file = io.File(args[0]);
+        let file = io.File(/\//.test(args[0]) ? args[0] : options.sessiondir+args[0]);
 
         if (!file.exists() || !file.isReadable() || file.isDirectory()) {
             dactyl.echoerr(_("io.notReadable", file.path.quote()));
