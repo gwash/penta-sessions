@@ -117,7 +117,7 @@ group.commands.add(['sessions[ave]','mkses[sion]'],
         data+='\ncd '+io.cwd.path;
         data+='\nse '+options.runtimepath;
         data+='\nse '+options.sessiondir;
-        tabs.allTabs.forEach(function (tab, i) {
+        tabs.visibleTabs.forEach(function (tab, i) {
             data+='\nt '+tab.linkedBrowser.contentDocument.location.href;
         });
 
