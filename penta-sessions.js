@@ -135,7 +135,11 @@ group.commands.add(['sessions[ave]','mkses[sion]'],
     }, {
         argCount: '?',
     	bang: true,
-        completer: function (context) {context.anchored=false; completion.file(context,true,options.sessiondir)}
+        completer: function (context) {
+            context.anchored=false;
+            /^\//.test(context.filter) ? completion.file(context,true)
+                : completion.file(context,true,options.sessiondir);
+        }
     }
 );
 
@@ -159,7 +163,11 @@ group.commands.add(['sessionl[oad]'],
     }, {
         argCount: "1",
     	bang: true,
-        completer: function (context) {context.anchored=false; completion.file(context,true,options.sessiondir)}
+        completer: function (context) {
+            context.anchored=false;
+            /^\//.test(context.filter) ? completion.file(context,true)
+                : completion.file(context,true,options.sessiondir);
+        }
     }
 );
 
