@@ -117,8 +117,8 @@ group.commands.add(['sessions[ave]','mkses[sion]'],
 
         let data = '" vim: set ft=pentadactyl:\n';
         data+='\ncd '+io.cwd.path;
-        data+='\nse '+options.runtimepath;
-        data+='\nse '+options.sessiondir;
+        data+='\nse rtp='+options.runtimepath;
+        data+='\nse sesdir='+options.sessiondir;
         tabs.visibleTabs.forEach(function (tab, i) {
             data+='\nt '+tab.linkedBrowser.contentDocument.location.href;
         });
