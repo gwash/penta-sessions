@@ -58,8 +58,7 @@ var INFO =
                 <example><ex>:sessionsave</ex> pythonref</example>
             </p>
             <p>
-                If no <oa>file</oa> was specified, it will save to <o>sessionfile</o> if set, otherwise to a
-                numbered file (based on current date) in <o>sessiondir</o>.
+                If no <oa>file</oa> was specified it will save to a numbered file (based on current date) in <o>sessiondir</o>.
             </p>
             <p>
                 Adding ! will overwrite the file if it exists.
@@ -111,7 +110,7 @@ group.commands.add(['sessions[ave]','mkses[sion]'],
     'Save current window',
     function(args) {
         let filename = args[0] ? (/\//.test(args[0]) ? args[0] : options.sessiondir+args[0])
-                : (options.sessionfile || options.sessiondir+Date.now()+'.penta')
+                : options.sessiondir+Date.now()+'.penta'
         let file = io.File(filename);
       
         dactyl.assert(!file.exists() || args.bang, _("io.exists", file.path.quote()));
