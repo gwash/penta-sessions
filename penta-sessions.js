@@ -136,7 +136,7 @@ group.commands.add(['sessions[ave]','mkses[sion]'],
     }, {
         argCount: '?',
     	bang: true,
-        completer: function (context) completion.file(context, true, options.sessiondir),
+        completer: function (context) {context.anchored=false; completion.file(context,true,options.sessiondir)}
     }
 );
 
@@ -160,7 +160,7 @@ group.commands.add(['sessionl[oad]'],
     }, {
         argCount: "1",
     	bang: true,
-        completer: function (context) completion.file(context, true, options.sessiondir),
+        completer: function (context) {context.anchored=false; completion.file(context,true,options.sessiondir)}
     }
 );
 
