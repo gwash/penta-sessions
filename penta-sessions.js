@@ -67,6 +67,21 @@ var INFO =
         </description>
     </item>
     <item>
+        <tags>sa :sessiona :sessionappend :sessionadd</tags>
+        <strut/>
+        <spec>:sessiona<oa>ppend</oa><oa>!</oa> <oa>file</oa></spec>
+        <spec>sa</spec>
+        <description>
+            <p>
+                Appends current tab to an existing session file. If a ! was supplied it will append all tabs
+                in current window instead.
+            </p>
+            <p>
+                If <oa>file</oa> is a basename, it will look for it in <o>sessiondir</o>.
+            </p>
+        </description>
+    </item>
+    <item>
         <tags>sl :sessionl :sessionload</tags>
         <strut/>
         <spec>:sessionl<oa>oad</oa><oa>!</oa> <oa>file</oa></spec>
@@ -143,6 +158,44 @@ group.commands.add(['sessions[ave]','mkses[sion]'],
     }
 );
 
+group.commands.add(['sessiona[ppend]', 'sessionadd'],
+    'Append tab(s) to a session file',
+    function(args) {
+        let file = io.File(/\//.test(args[0]) ? args[0] : options.sessiondir+args[0]);
+      
+        if (!file.exists() || !file.isWritable() || file.isDirectory()) {
+            dactyl.echoerr(_("io.notWriteable", file.path.quote()));
+            return;
+        }
+
+        let data = '';
+        if (args.bang) {
+            tabs.visibleTabs.forEach(function (tab, i) {
+                data+='\nt '+tab.linkedBrowser.contentDocument.location.href;
+            });
+        } else {
+            data+='\nt '+gBrowser.mCurrentTab.linkedBrowser.contentDocument.location.href;
+        }
+
+        try {
+            file.write(data,'>>');
+        } catch(e) {
+            dactyl.echoerr(_("io.notWriteable", file.path.quote()));
+            return;
+        };
+        
+        dactyl.echomsg('Appended tab(s) to session file '+file.path.quote());
+    }, {
+        argCount: '1',
+    	bang: true,
+        completer: function (context) {
+            context.anchored=false;
+            /^\//.test(context.filter) ? completion.file(context,true)
+                : completion.file(context,true,options.sessiondir);
+        }
+    }
+);
+
 group.commands.add(['sessionl[oad]'],
     'Load a session file',
     function(args) {
@@ -174,6 +227,11 @@ group.commands.add(['sessionl[oad]'],
 group.mappings.add([modes.NORMAL], ['ss'],
     'Save current window',
     function() { CommandExMode().open('sessionsave! ')}
+);
+
+group.mappings.add([modes.NORMAL], ['sa'],
+    'Append tab(s) to a session file',
+    function() { CommandExMode().open('sessionappend ')}
 );
 
 group.mappings.add([modes.NORMAL], ['sl'],
