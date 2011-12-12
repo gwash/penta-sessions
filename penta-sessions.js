@@ -43,7 +43,7 @@ var INFO =
         </description>
     </item>
     <item>
-        <tags>ss :sessions :sessionsave :mkses :mksesion</tags>
+        <tags>ss :sessions :sessionsave :mkses :mksession</tags>
         <strut/>
         <spec>:sessions<oa>ave</oa><oa>!</oa> <oa>file</oa></spec>
         <spec>ss</spec>
@@ -139,7 +139,7 @@ group.commands.add(['sessions[ave]','mkses[sion]'],
         });
 
         try {
-            file.write(data)
+            file.write(data);
         } catch(e) {
             dactyl.echoerr(_("io.notWriteable", file.path.quote()));
             return;
