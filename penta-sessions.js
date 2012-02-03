@@ -4,7 +4,6 @@ Copyright (c) 2011, M Rawash <mrawash@gmail.com>
 Released under the most recent GPL <http://www.gnu.org/licenses/gpl.html>
 */
 
-"use strict";
 XML.ignoreWhitespace = false;
 XML.prettyPrinting = false;
 var INFO =
@@ -73,7 +72,7 @@ var INFO =
         <spec>sa</spec>
         <description>
             <p>
-                Appends current tab to an existing session file. If a ! was supplied it will append all tabs
+                Appends current tab to an existing session <oa>file</oa>. If a ! was supplied it will append all tabs
                 in current window instead.
             </p>
             <p>
