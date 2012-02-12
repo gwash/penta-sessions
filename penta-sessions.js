@@ -4,8 +4,18 @@ Copyright (c) 2011-2012, M Rawash <mrawash@gmail.com>
 Released under the most recent GPL <http://www.gnu.org/licenses/gpl.html>
 */
 
+let sessiondir_completer = function (context) {
+    context.anchored=false;
+    dir = options.sessiondir;
+    if (/^~?\//.test(context.filter))
+        completion.file(context,true);
+    else {
+        completion.file(context,true,dir+context.filter);
+        context.keys.text = function (f) this.path.substr(dir.length);
+    }
+}
 
-var setsessiondir = function (value) {
+let sessiondir_setter = function (value) {
     let dir = io.File(value);
     if (!dir.exists()) {
         try { dir.create(1,488) } catch(e) { return dactyl.echoerr(e.message) };
@@ -17,10 +27,9 @@ var setsessiondir = function (value) {
 
 group.options.add(['sessiondir', 'sesdir'],
     'Default directory for saving sessions',
-    'string',
-    options.runtimepath+'/sessions/',
+    'string', options.runtimepath+'/sessions/',
     {
-        setter: setsessiondir,
+        setter: sessiondir_setter,
     }
 )
 
@@ -48,8 +57,8 @@ group.options.add(['sessionoptions', 'sesop'],
 group.commands.add(['sessions[ave]','mkses[sion]'],
     'Save current window',
     function(args) {
-        let filename = args[0] ? (/\//.test(args[0]) ? args[0] : options.sessiondir+args[0])
-                : options.sessiondir+Date.now()+'.penta'
+        let filename = args[0] ? (/^~?\//.test(args[0]) ? args[0] :
+                options.sessiondir+args[0]) : options.sessiondir+Date.now()+'.penta'
         let file = io.File(filename);
       
         dactyl.assert(!file.exists() || args.bang, _("io.exists", file.path.quote()));
@@ -95,18 +104,14 @@ group.commands.add(['sessions[ave]','mkses[sion]'],
     }, {
         argCount: '?',
     	bang: true,
-        completer: function (context) {
-            context.anchored=false;
-            /^\//.test(context.filter) ? completion.file(context,true)
-                : completion.file(context,true,options.sessiondir);
-        }
+        completer: sessiondir_completer
     }
 );
 
 group.commands.add(['sessiona[ppend]', 'sessionadd'],
     'Append tab(s) to a session file',
     function(args) {
-        let file = io.File(/\//.test(args[0]) ? args[0] : options.sessiondir+args[0]);
+        let file = io.File(/^~?\//.test(args[0]) ? args[0] : options.sessiondir+args[0]);
       
         if (!file.exists() || !file.isWritable() || file.isDirectory()) {
             dactyl.echoerr(_("io.notWriteable", file.path.quote()));
@@ -133,18 +138,14 @@ group.commands.add(['sessiona[ppend]', 'sessionadd'],
     }, {
         argCount: '1',
     	bang: true,
-        completer: function (context) {
-            context.anchored=false;
-            /^\//.test(context.filter) ? completion.file(context,true)
-                : completion.file(context,true,options.sessiondir);
-        }
+        completer: sessiondir_completer
     }
 );
 
 group.commands.add(['sessionl[oad]'],
     'Load a session file',
     function(args) {
-        let file = io.File(/\//.test(args[0]) ? args[0] : options.sessiondir+args[0]);
+        let file = io.File(/^~?\//.test(args[0]) ? args[0] : options.sessiondir+args[0]);
 
         if (!file.exists() || !file.isReadable() || file.isDirectory()) {
             dactyl.echoerr(_("io.notReadable", file.path.quote()));
@@ -161,11 +162,7 @@ group.commands.add(['sessionl[oad]'],
     }, {
         argCount: "1",
     	bang: true,
-        completer: function (context) {
-            context.anchored=false;
-            /^\//.test(context.filter) ? completion.file(context,true)
-                : completion.file(context,true,options.sessiondir);
-        }
+        completer: sessiondir_completer
     }
 );
 
