@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011, M Rawash <mrawash@gmail.com>
+Copyright (c) 2011-2012, M Rawash <mrawash@gmail.com>
 
 Released under the most recent GPL <http://www.gnu.org/licenses/gpl.html>
 */
