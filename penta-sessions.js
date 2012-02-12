@@ -263,8 +263,10 @@ var INFO =
                 restored later with <ex>:sessionload <oa>file</oa></ex>.
             </p>
             <p>
-                If <oa>file</oa> is just a basename (without directory path), it will
-                create a session file with that name in the <o>sessiondir</o>.
+                If <oa>file</oa> is just a basename or a relative path (without leading 
+                directory path), it will create a session file with that name in the 
+                <o>sessiondir</o>. It also takes care of creating new directories if
+                specified.
                 <example>
                     <ex>:sessionsave</ex> pythonref
                 </example>
@@ -307,7 +309,8 @@ var INFO =
                 if no ! was added.
             </p>
             <p>
-                If <oa>file</oa> is a basename, it will look for it in <o>sessiondir</o>.
+                If <oa>file</oa> is a basename/relative path, it will look for it in
+                <o>sessiondir</o>.
             </p>
         </description>
     </item>
