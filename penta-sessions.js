@@ -46,7 +46,10 @@ group.options.add(['sessiondir', 'sesdir'],
 
 group.options.add(['sessionfile', 'sesfile'],
     'Current session file',
-    'string', ''
+    'string', '',
+    {
+        presist: false
+    }
 )
 
 group.options.add(['sessionoptions', 'sesop'],
@@ -179,17 +182,17 @@ group.commands.add(['sessionl[oad]'],
 
 group.mappings.add([modes.NORMAL], ['ss'],
     'Save current window',
-    function() { CommandExMode().open('sessionsave! ')}
+    function() CommandExMode().open('sessionsave! ')
 );
 
 group.mappings.add([modes.NORMAL], ['sa'],
     'Append tab(s) to a session file',
-    function() { CommandExMode().open('sessionappend ')}
+    function() CommandExMode().open('sessionappend ')
 );
 
 group.mappings.add([modes.NORMAL], ['sl'],
     'Load a session file',
-    function() { CommandExMode().open('sessionload ')}
+    function() CommandExMode().open('sessionload ')
 );
 
 
@@ -294,7 +297,8 @@ var INFO =
                 supplied it will append all tabs in current window instead.
             </p>
             <p>
-                If <oa>file</oa> is a basename, it will look for it in <o>sessiondir</o>.
+                If <oa>file</oa> is a basename/relative path, it will look for it in
+                <o>sessiondir</o>.
             </p>
         </description>
     </item>
