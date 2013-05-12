@@ -196,128 +196,125 @@ group.mappings.add([modes.NORMAL], ['sl'],
 );
 
 
-XML.ignoreWhitespace = false;
-XML.prettyPrinting = false;
+"use strict";
 var INFO =
-<plugin name="penta-sessions" version="0.2"
-        href="https://github.com/gwash/penta-sessions"
-        summary="Pentadactyl Session Manager"
-        xmlns={NS}>
-    <author email="mrawash@gmail.com">M Rawash</author>
-    <license href="http://www.gnu.org/licenses/gpl.html">GPL</license>
-    <project name="Pentadactyl" min-version="1.0"/>
-    <p>
-        This plugin provides Vim-like session handeling.
-    </p>
-        <note>Only operates on current window</note>
-    <item>
-        <tags>'sesdir' 'sessiondir'</tags>
-        <spec>'sessiondir' 'sesdir'</spec>
-        <type>string</type>
-        <default>{options.get("sessiondir").stringDefaultValue}</default>
-        <description>
-            <p>
-                The default directory to save/load sessions from.
-            </p>
-        </description>
-    </item>
-    <item>
-        <tags>'sesfile' 'sessionfile'</tags>
-        <spec>'sessionfile' 'sesfile'</spec>
-        <type>string</type>
-        <default></default>
-        <description>
-            <p>
-                The session file you are currently working with, this will be set 
-                automatically whenever you save or load a session, but you can set it
-                manually if you want.
-            </p>
-        </description>
-    </item>
-    <item>
-        <tags>'sesop' 'sessionoptions'</tags>
-        <spec>'sessionoptions' 'sesop'</spec>
-        <type>stringlist</type>
-        <default>{options.get("sessionoptions").stringDefaultValue}</default>
-        <description>
-            <p>
-                Changes the effect of the <ex>:sessionsave</ex> command.  It is a comma
-                separated list of words.  Each word enables saving and restoring
-                something:
-            </p>
-            <dl>
-            { template.map(options.get("sessionoptions").completer(), function ([k, v])
-                <><dt>{k}</dt> <dd>{v}</dd></>) }
-            </dl>
-            <note>
-                "sesdir" overrides "curdir" if added.
-            </note>
-        </description>
-    </item>
-
-    <item>
-        <tags>ss :sessions :sessionsave :mkses :mksession</tags>
-        <strut/>
-        <spec>:sessions<oa>ave</oa><oa>!</oa> <oa>file</oa></spec>
-        <spec>ss</spec>
-        <description>
-            <p>
-                Saves current session to an ExCommand <oa>file</oa>, which can be 
-                restored later with <ex>:sessionload <oa>file</oa></ex>.
-            </p>
-            <p>
-                If <oa>file</oa> is just a basename or a relative path (without leading 
-                directory path), it will create a session file with that name in the 
-                <o>sessiondir</o>. It also takes care of creating new directories if
-                specified.
-                <example>
-                    <ex>:sessionsave</ex> pythonref
-                </example>
-            </p>
-            <p>
-                If no <oa>file</oa> was specified it will save to a numbered file
-                (based on current date) in <o>sessiondir</o>.
-            </p>
-            <p>
-                Adding ! will overwrite the file if it exists.
-                <example>
-                    <ex>:sessionsave!</ex> {options.runtimepath}/sessions/gapi.penta
-                </example>
-            </p>
-        </description>
-    </item>
-    <item>
-        <tags>sa :sessiona :sessionappend :sessionadd</tags>
-        <strut/>
-        <spec>:sessiona<oa>ppend</oa><oa>!</oa> <oa>file</oa></spec>
-        <spec>sa</spec>
-        <description>
-            <p>
-                Appends current tab to an existing session <oa>file</oa>. If a ! was
-                supplied it will append all tabs in current window instead.
-            </p>
-            <p>
-                If <oa>file</oa> is a basename/relative path, it will look for it in
-                <o>sessiondir</o>.
-            </p>
-        </description>
-    </item>
-    <item>
-        <tags>sl :sessionl :sessionload</tags>
-        <strut/>
-        <spec>:sessionl<oa>oad</oa><oa>!</oa> <oa>file</oa></spec>
-        <spec>sl</spec>
-        <description>
-            <p>
-                Loads session from <oa>file</oa>, replacing all tabs in current window
-                if no ! was added.
-            </p>
-            <p>
-                If <oa>file</oa> is a basename/relative path, it will look for it in
-                <o>sessiondir</o>.
-            </p>
-        </description>
-    </item>
-</plugin>;
+["plugin", {
+        name: "penta-sessions", version: "0.2",
+        href: "https://github.com/gwash/penta-sessions",
+        summary: "Pentadactyl Session Manager",
+        xmlns: "dactyl"
+    },
+    ["author", { email: "mrawash@gmail.com", }, "M Rawash"],
+    ["license", { href: "http://www.gnu.org/licenses/gpl.html" }, "GPL"],
+    ["project", { name: "Pentadactyl", "min-version": "1.0" }],
+    ["p", {},
+        "This plugin provides Vim-like session handeling."
+    ],
+    ["note", {},
+        "Only operates on current window"
+    ],
+    ["item", {},
+        ["tags", {}, "'sesdir' 'sessiondir'"],
+        ["spec", {}, "'sessiondir' 'sesdir'"],
+        ["type", {}, "string"],
+        ["default", {}, options.get("sessiondir").stringDefaultValue],
+        ["description", {},
+            ["p", {},
+                "The default directory to save/load sessions from."
+            ]
+        ]
+    ],
+    ["item", {},
+        ["tags", {}, "'sesfile' 'sessionfile'"],
+        ["spec", {}, "'sessionfile' 'sesfile'"],
+        ["type", {}, "string"],
+        ["default", {}, ""],
+        ["description", {},
+            ["p", {},
+                "The session file you are currently working with, this will be set ", 
+                "automatically whenever you save or load a session, but you can set it ",
+                "manually if you want."
+            ]
+        ]
+    ],
+    ["item", {},
+        ["tags", {}, "'sesop' 'sessionoptions'"],
+        ["spec", {}, "'sessionoptions' 'sesop'"],
+        ["type", {}, "stringlist"],
+        ["default", {}, options.get("sessionoptions").stringDefaultValue],
+        ["description", {},
+            ["p", {},
+                "Changes the effect of the", ["ex", {}, ":sessionsave"], " command.  It is a comma ",
+                "separated list of words.  Each word enables saving and restoring something:"
+            ],
+            ["dl", {}, template.map(options.get("sessionoptions").completer(), function ([k, v])
+                [["dt", {}, k], ["dd", {}, v]]
+            )],
+            ["note", {},
+                "'sesdir' overrides 'curdir' if added."
+            ]
+        ]
+    ],
+    ["item", {},
+        ["tags", {}, "ss :sessions :sessionsave :mkses :mksession"],
+        ["strut"],
+        ["spec", {}, ":sessions", ["oa", {}, "ave"], ["oa", {}, "!"], ["oa", {}, "file"]],
+        ["spec", {}, "ss"],
+        ["description", {},
+            ["p", {},
+                "Saves current session to an ExCommand ", ["oa", {}, "file"], " which can be ",
+                "restored later with", ["ex", {}, ":sessionload ", ["oa", {}, "file"]], "."
+            ],
+            ["p", {},
+                "If ", ["oa", {}, "file"], " is just a basename or a relative path (without leading ",
+                "directory path), it will create a session file with that name in the", 
+                ["o", {}, "sessiondir"], ". It also takes care of creating new directories if specified.",
+                ["example", {}, ["ex", {}, ":sessionsave"], " pythonref"]
+            ],
+            ["p", {},
+                "If no ", ["oa", {}, "file"], " was specified it will save to a numbered file ",
+                "(based on current date) in ", ["o", {}, "sessiondir"], "."
+            ],
+            ["p", {},
+                "Adding ! will overwrite the file if it exists.",
+                ["example", {},
+                    ["ex", {}, ":sessionsave!"], " ", options.runtimepath + "/sessions/gapi.penta"
+                ]
+            ]
+        ]
+    ],
+    ["item", {},
+        ["tags", {}, "sa :sessiona :sessionappend :sessionadd"],
+        ["strut"],
+        ["spec", {}, ":sessiona", ["oa", {}, "ppend"], ["oa", {}, "!"], ["oa", {}, "file"]],
+        ["spec", {}, "sa"],
+        ["description", {},
+            ["p", {},
+                "Appends current tab to an existing session ", ["oa", {}, "file"], ". If a ! was ",
+                "supplied it will append all tabs in current window instead."
+            ],
+            ["p", {},
+                "If ", ["oa", {}, "file"], " is a basename/relative path, it will look for it in ", 
+                ["o", {}, "sessiondir"], "."
+            ]
+        ]
+    ],
+    ["item", {},
+        ["tags", {}, "sl :sessionl :sessionload"],
+        ["strut"],
+        ["spec", {}, ":sessionl", ["oa", {}, "oad"], ["oa", {}, "!"], ["oa", {}, "file"]],
+        ["spec", {}, "sl"],
+        ["description", {},
+            ["p", {},
+                "Loads session from ", ["oa", {}, "file"], ", replacing all tabs in current window ",
+                "if no ! was added."
+            ],
+            ["p", {},
+                "If ", ["oa", {}, "file"], " is a basename/relative path, it will look for it in ",
+                ["o", {}, "sessiondir"], "."
+            ]
+        ]
+    ]
+];
 
 /* vim:se sts=4 sw=4 et: */
